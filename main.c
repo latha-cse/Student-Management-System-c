@@ -1,0 +1,69 @@
+#include <stdio.h>
+#include <string.h>
+
+struct Student {
+    int roll;
+    char name[50];
+    float marks;
+};
+
+struct Student students[100];
+int count = 0;
+
+void addStudent();
+void displayStudents();
+
+int main() {
+    int choice;
+
+    while(1) {
+        printf("\n===== Student Management System =====\n");
+        printf("1. Add Student\n");
+        printf("2. Display Students\n");
+        printf("3. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch(choice) {
+            case 1:
+                addStudent();
+                break;
+            case 2:
+                displayStudents();
+                break;
+            case 3:
+                printf("Exiting...\n");
+                return 0;
+            default:
+                printf("Invalid choice!\n");
+        }
+    }
+}
+
+void addStudent() {
+    printf("Enter Roll Number: ");
+    scanf("%d", &students[count].roll);
+
+    printf("Enter Name: ");
+    scanf("%s", students[count].name);
+
+    printf("Enter Marks: ");
+    scanf("%f", &students[count].marks);
+
+    count++;
+    printf("Student Added Successfully!\n");
+}
+
+void displayStudents() {
+    int i;
+    if(count == 0) {
+        printf("No students found.\n");
+        return;
+    }
+
+    for(i = 0; i < count; i++) {
+        printf("\nRoll: %d", students[i].roll);
+        printf("\nName: %s", students[i].name);
+        printf("\nMarks: %.2f\n", students[i].marks);
+    }
+}

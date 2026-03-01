@@ -10,18 +10,24 @@ struct Student {
 struct Student students[100];
 int count = 0;
 
+// Function Declarations
 void addStudent();
 void displayStudents();
 void searchStudent();
 void deleteStudent();
+void saveToFile();
+void loadFromFile();
+
 int main() {
     int choice;
+
+    loadFromFile();   // Load data when program starts
 
     while(1) {
         printf("\n===== Student Management System =====\n");
         printf("1. Add Student\n");
         printf("2. Display Students\n");
-        printf("3. Search Student\n"); 
+        printf("3. Search Student\n");
         printf("4. Delete Student\n");
         printf("5. Exit\n");
         printf("Enter your choice: ");
@@ -40,7 +46,7 @@ int main() {
             case 4:
                 deleteStudent();
                 break;
-            case 5:    
+            case 5:
                 printf("Exiting...\n");
                 return 0;
             default:
@@ -49,6 +55,7 @@ int main() {
     }
 }
 
+// Add Student
 void addStudent() {
     printf("Enter Roll Number: ");
     scanf("%d", &students[count].roll);
@@ -60,29 +67,33 @@ void addStudent() {
     scanf("%f", &students[count].marks);
 
     count++;
+
+    saveToFile();  // Save after adding
     printf("Student Added Successfully!\n");
 }
 
+// Display Students
 void displayStudents() {
-    int i;
     if(count == 0) {
         printf("No students found.\n");
         return;
     }
 
-    for(i = 0; i < count; i++) {
+    for(int i = 0; i < count; i++) {
         printf("\nRoll: %d", students[i].roll);
         printf("\nName: %s", students[i].name);
         printf("\nMarks: %.2f\n", students[i].marks);
     }
 }
+
+// Search Student
 void searchStudent() {
-    int roll, i, found = 0;
+    int roll, found = 0;
 
     printf("Enter Roll Number to Search: ");
     scanf("%d", &roll);
 
-    for(i = 0; i < count; i++) {
+    for(int i = 0; i < count; i++) {
         if(students[i].roll == roll) {
             printf("\nStudent Found!\n");
             printf("Roll: %d\n", students[i].roll);
@@ -97,20 +108,23 @@ void searchStudent() {
         printf("Student not found.\n");
     }
 }
+
+// Delete Student
 void deleteStudent() {
-    int roll, i, j, found = 0;
+    int roll, found = 0;
 
     printf("Enter Roll Number to Delete: ");
     scanf("%d", &roll);
 
-    for(i = 0; i < count; i++) {
+    for(int i = 0; i < count; i++) {
         if(students[i].roll == roll) {
-            for(j = i; j < count - 1; j++) {
+            for(int j = i; j < count - 1; j++) {
                 students[j] = students[j + 1];
             }
             count--;
-            found = 1;
+            saveToFile();  // Save after deleting
             printf("Student Deleted Successfully!\n");
+            found = 1;
             break;
         }
     }
@@ -118,4 +132,35 @@ void deleteStudent() {
     if(found == 0) {
         printf("Student not found.\n");
     }
+}
+
+// Save Data to File
+void saveToFile() {
+    FILE *fp = fopen("students.txt", "w");
+
+    for(int i = 0; i < count; i++) {
+        fprintf(fp, "%d %s %f\n",
+                students[i].roll,
+                students[i].name,
+                students[i].marks);
+    }
+
+    fclose(fp);
+}
+
+// Load Data from File
+void loadFromFile() {
+    FILE *fp = fopen("students.txt", "r");
+
+    if(fp == NULL)
+        return;
+
+    while(fscanf(fp, "%d %s %f",
+                 &students[count].roll,
+                 students[count].name,
+                 &students[count].marks) != EOF) {
+        count++;
+    }
+
+    fclose(fp);
 }

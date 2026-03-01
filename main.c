@@ -13,6 +13,7 @@ int count = 0;
 void addStudent();
 void displayStudents();
 void searchStudent();
+void deleteStudent();
 int main() {
     int choice;
 
@@ -21,7 +22,8 @@ int main() {
         printf("1. Add Student\n");
         printf("2. Display Students\n");
         printf("3. Search Student\n"); 
-        printf("4. Exit\n");
+        printf("4. Delete Student\n");
+        printf("5. Exit\n");
         printf("Enter your choice: ");
         scanf("%d", &choice);
 
@@ -36,6 +38,9 @@ int main() {
                 searchStudent();
                 break;
             case 4:
+                deleteStudent();
+                break;
+            case 5:    
                 printf("Exiting...\n");
                 return 0;
             default:
@@ -84,6 +89,28 @@ void searchStudent() {
             printf("Name: %s\n", students[i].name);
             printf("Marks: %.2f\n", students[i].marks);
             found = 1;
+            break;
+        }
+    }
+
+    if(found == 0) {
+        printf("Student not found.\n");
+    }
+}
+void deleteStudent() {
+    int roll, i, j, found = 0;
+
+    printf("Enter Roll Number to Delete: ");
+    scanf("%d", &roll);
+
+    for(i = 0; i < count; i++) {
+        if(students[i].roll == roll) {
+            for(j = i; j < count - 1; j++) {
+                students[j] = students[j + 1];
+            }
+            count--;
+            found = 1;
+            printf("Student Deleted Successfully!\n");
             break;
         }
     }

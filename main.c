@@ -12,7 +12,7 @@ int count = 0;
 
 void addStudent();
 void displayStudents();
-
+void searchStudent();
 int main() {
     int choice;
 
@@ -20,7 +20,8 @@ int main() {
         printf("\n===== Student Management System =====\n");
         printf("1. Add Student\n");
         printf("2. Display Students\n");
-        printf("3. Exit\n");
+        printf("3. Search Student\n"); 
+        printf("4. Exit\n");
         printf("Enter your choice: ");
         scanf("%d", &choice);
 
@@ -32,6 +33,9 @@ int main() {
                 displayStudents();
                 break;
             case 3:
+                searchStudent();
+                break;
+            case 4:
                 printf("Exiting...\n");
                 return 0;
             default:
@@ -65,5 +69,26 @@ void displayStudents() {
         printf("\nRoll: %d", students[i].roll);
         printf("\nName: %s", students[i].name);
         printf("\nMarks: %.2f\n", students[i].marks);
+    }
+}
+void searchStudent() {
+    int roll, i, found = 0;
+
+    printf("Enter Roll Number to Search: ");
+    scanf("%d", &roll);
+
+    for(i = 0; i < count; i++) {
+        if(students[i].roll == roll) {
+            printf("\nStudent Found!\n");
+            printf("Roll: %d\n", students[i].roll);
+            printf("Name: %s\n", students[i].name);
+            printf("Marks: %.2f\n", students[i].marks);
+            found = 1;
+            break;
+        }
+    }
+
+    if(found == 0) {
+        printf("Student not found.\n");
     }
 }
